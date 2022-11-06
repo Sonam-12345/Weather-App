@@ -1,6 +1,8 @@
 const express = require("express");
 const https = require("https");
 const bodyParser = require("body-parser");
+require("dotenv").config();
+
 
 const app = express();
 
@@ -16,7 +18,8 @@ app.get("/", function(req, res) {
 app.post("/", function(req, res) {
 
   const query = req.body.cityName;
-  const apiKey = "814964ec4d893a26c1cbb454e1602503";
+  const apiKey = process.env.RANDOMER_API_TOKEN;
+  console.log(process.env.MY_KEY);
   const unit = "metric";
   const url = "https://api.openweathermap.org/data/2.5/weather?q=" + query + "&appid=" + apiKey + "&units=" + unit;
   https.get(url, function(response) {
@@ -25,7 +28,7 @@ app.post("/", function(req, res) {
 
     response.on("data", function(data) {
       const weatherData = JSON.parse(data);
-
+      console.log( weatherData);
       const temp = weatherData.main.temp;
       const description = weatherData.weather[0].description;
       const icon = weatherData.weather[0].icon;
